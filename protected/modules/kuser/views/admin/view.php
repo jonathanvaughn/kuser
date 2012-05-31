@@ -1,26 +1,26 @@
 <?php
 $this->breadcrumbs = array(
-    KuserModule::t('Users') => array('admin'),
-    $model->principalname,
+    KUserModule::t('Users') => array('admin'),
+    $model->username,
 );
 ?>
-<h1><?php echo KuserModule::t('View User') . ' "' . $model->principalname. '"'; 
+<h1><?php echo KUserModule::t('View User') . ' "' . $model->username. '"'; 
 ?></h1>
 
 <?php echo $this->renderPartial('_menu', array(
     'list' => array(
-        CHtml::link(KuserModule::t('Create User'), array('create')),
-        CHtml::link(KuserModule::t('Update User'), 
+        CHtml::link(KUserModule::t('Create User'), array('create')),
+        CHtml::link(KUserModule::t('Update User'), 
                 array('update', 'id' => $model->id)),
-        CHtml::linkButton(KuserModule::t('Delete User'), array('submit' => 
+        CHtml::linkButton(KUserModule::t('Delete User'), array('submit' => 
             array('delete', 'id' => $model->id), 'confirm' => 
-            KuserModule::t('Are you sure you want to delete this item?'))),
+            KUserModule::t('Are you sure you want to delete this item?'))),
         ),
     ));
 
     $attributes = array(
         'id',
-        'principalname',
+        'username',
     );
     
     array_push($attributes,
@@ -32,15 +32,15 @@ $this->breadcrumbs = array(
             array(
                 'name' => 'lastvisit',
                 'value' => '(($model->lastvisit) ? date("d.m.Y H:i:s", ' .
-                '$model->lastvisit) : KuserModule::t("Not visisted"))',
+                '$model->lastvisit) : KUserModule::t("Not visisted"))',
             ),
             array(
                 'name' => 'superuser',
-                'value' => Kuser::itemAlias("AdminStatus", $model->superuser),
+                'value' => KUser::itemAlias("AdminStatus", $model->superuser),
             ),
             array(
                 'name' => 'status',
-                'value' => Kuser::itemAlias("UserStatus", $model->status),
+                'value' => KUser::itemAlias("UserStatus", $model->status),
             )
     );
     

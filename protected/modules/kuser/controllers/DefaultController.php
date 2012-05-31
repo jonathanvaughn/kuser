@@ -6,7 +6,7 @@ class DefaultController extends Controller
 	{
             $dataProvider = new CActiveDataProvider('KUser', array(
                 'criteria' => array(
-                    'condition' => 'status>='.Kuser::STATUS_INACTIVE,
+                    'condition' => 'status>='.KUser::STATUS_INACTIVE,
                 ),
                 'pagination' => array(
                     'pageSize' => Yii::app()->controller->module->user_page_size,

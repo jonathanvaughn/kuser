@@ -16,6 +16,8 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+                'application.modules.kuser.models.*',
+                'application.modules.kuser.components.*',
 	),
 
 	'modules'=>array(
@@ -28,6 +30,11 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		*/
+                'kuser'=> array(
+                        
+                        'kerberosKeytab' => dirname(__FILE__) .
+                            DIRECTORY_SEPARATOR . 'HTTP.keytab',
+                ),
 	),
 
 	// application components
@@ -35,7 +42,9 @@ return array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
-		),
+                        //'class' => 'kuser',
+                    //'loginUrl' => array('/kuser/login'),
+ 		),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(
@@ -47,19 +56,19 @@ return array(
 			),
 		),
 		*/
-		'db'=>array(
+		/*'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		),*/
 		// uncomment the following to use a MySQL database
-		/*
+		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'connectionString' => 'mysql:host=localhost;dbname=spnego',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'spnego',
+			'password' => 'spnego',
 			'charset' => 'utf8',
 		),
-		*/
+		
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
             'errorAction'=>'site/error',
@@ -72,11 +81,12 @@ return array(
 					'levels'=>'error, warning',
 				),
 				// uncomment the following to show log messages on web pages
-				/*
+				
 				array(
 					'class'=>'CWebLogRoute',
+                                        'levels' => 'error, warning',
 				),
-				*/
+				
 			),
 		),
 	),

@@ -14,7 +14,7 @@ class UserIdentity extends CUserIdentity
     const ERROR_STATUS_INACTIVE = 5; // Account is inactive
     const ERROR_MISSING = 6; // Succesful Krb Auth but account missing from DB
 
-    var $principalName = '';
+    //var $principalName = '';
         
     /**
      * Authenticates a user
@@ -56,10 +56,10 @@ class UserIdentity extends CUserIdentity
                             
                         // Successful authentication
                         $this->errorCode=self::ERROR_NONE;
-                        $this->principalName = $auth->getAuthenticatedUser();
+                        $this->username = $auth->getAuthenticatedUser();
                         
                         $user = KUser::model()->notsafe()->findByAttributes(
-                                array('principalname' => $this->principalName));
+                                array('username' => $this->username));
                         if ( $user === NULL )
                         {
                             $this->errorCode = self::ERROR_MISSING;
@@ -131,6 +131,6 @@ class UserIdentity extends CUserIdentity
      */
     public function getName()
     {
-        return $this->principalName;
+        return $this->username;
     }
 }

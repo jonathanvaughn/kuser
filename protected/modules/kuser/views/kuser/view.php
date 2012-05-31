@@ -1,18 +1,18 @@
 <?php
 $this->breadcrumbs = array (
-    KuserModule::t('Users') => array('index'), $model->principalname,
+    KuserModule::t('Users') => array('index'), $model->username,
 );
 ?>
-<h1><?php echo KuserModule::t('View User') . ' "' . $model->principalname .
+<h1><?php echo KuserModule::t('View User') . ' "' . $model->username .
         '"'; ?></h1>
 <ul class="actions">
-    <li><?php echo CHtml::link(UserModule::t('List User'), array('index')); ?></li>
+    <li><?php echo CHtml::link(KuserModule::t('List Users'), array('index')); ?></li>
 </ul><!-- actions -->
 
 <?php
 
     $attributes = array(
-        'principalname',
+        'username',
     );
     
     array_push($attributes,

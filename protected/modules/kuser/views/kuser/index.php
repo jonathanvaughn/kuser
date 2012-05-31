@@ -1,13 +1,13 @@
 <?php
 $this->breadcrumbs = array (
-    KuserModule::t('Users'),
+    KUserModule::t('Users'),
 );
 ?>
-<h1><?php echo KuserModule::t('List Users'); ?></h1>
-<?php if (KuserModule::isAdmin())
+<h1><?php echo KUserModule::t('List Users'); ?></h1>
+<?php if (KUserModule::isAdmin())
 {
     ?><ul class="actions">
-        <li><?php echo CHtml::link(KuserModule::t('Manage User'), 
+        <li><?php echo CHtml::link(KUserModule::t('Manage User'), 
                 Yii::app()->getModule('kuser')->adminUrl); ?></li>
 </ul><!-- actions --><?php
 } ?>
@@ -15,9 +15,9 @@ $this->breadcrumbs = array (
     'dataProvider' => $dataProvider,
     'columns' => array(
         array(
-            'name' => 'principalname',
+            'name' => 'username',
             'type' => 'raw',
-            'value' => 'CHtml::link(CHtml::encode($data->principalname), ' .
+            'value' => 'CHtml::link(CHtml::encode($data->username), ' .
                 'array("user/view", "id" => $data->id))',
         ),
         array(

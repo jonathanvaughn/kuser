@@ -1,6 +1,6 @@
 <?php
 
-class KLoginController extends Controller
+class LoginController extends Controller
 {
     public $defaultAction = 'login';
     
@@ -51,8 +51,8 @@ class KLoginController extends Controller
                         {
                             // We have Kerberos data, attempt to authenticate using it
                             
-                            $model->principalname = 'Kerberos:'.$data;
-                            $model->password = Yii::app()->user->kerberosKeytab;
+                            $model->username = 'Kerberos:'.$data;
+                            $model->password = Yii::app()->controller->module->kerberosKeytab;
                             //$model->rememberMe = $_POST[''];
                             if($model->validate())
                             {

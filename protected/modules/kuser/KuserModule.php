@@ -1,6 +1,6 @@
 <?php
 /**
- * Yii-Kuser module 
+ * Yii-KUser module 
  * 
  * This module implements a Yii User style module for use with rights,
  * however it uses Kerberos for authentication and implements SPNEGO for SSO.
@@ -13,7 +13,7 @@
 
 
 
-class KUserModule extends CWebModule
+class KuserModule extends CWebModule
 {
     /**
      * @var int
@@ -33,12 +33,17 @@ class KUserModule extends CWebModule
     public $logoutUrl = array('/kuser/logout');
     public $adminUrl = array('/kuser/admin');
     public $viewUrl = array('/kuser/view');
+    public $returnUrl = array('/');
+            
+    public $relations = array();
     
-    public $tableUsers = '{{users}}';
+    public $tableUsers = 'users';
     
     static private $_user;
     static private $_admin;
     static private $_admins;
+
+    public $componentBehaviors=array();
     
     /**
      * @param $str
@@ -46,9 +51,9 @@ class KUserModule extends CWebModule
      * @param $dic
      * @return string 
      */
-    public static function t($str='',$params=array(),$dic='kuser') 
+    public static function t($str='',$params=array(),$dic='KUser') 
     {
-        return Yii::t('KUserModule.'.$dic, $str, $params);
+        return Yii::t('KuserModule.'.$dic, $str, $params);
     }
     
     /**
@@ -95,8 +100,9 @@ class KUserModule extends CWebModule
      */    
     public static function user($id=0)
     {
+        
         if ($id)
-            return Kuser::model()->activate()->findByPk($id);
+            return KUser::model()->activate()->findByPk($id);
         else
         {
             if (Yii::app()->user->isGuest)
@@ -106,7 +112,10 @@ class KUserModule extends CWebModule
             else
             {
                 if (!self::$_user)
-                    self::$_user = KUser::model->active()->findByPk(Yii::app()->user->id);
+                {
+                    $id = Yii::app()->user->id;
+                    self::$_user = KUser::model()->active()->findByPk($id);
+                }
                 return self::$_user;
             }
         }
@@ -122,7 +131,7 @@ class KUserModule extends CWebModule
         return User;
     }
         
-	public function init()
+    public function init()
 	{
 		// this method is called when the module is being created
 		// you may place code here to customize the module or the application
@@ -133,6 +142,18 @@ class KUserModule extends CWebModule
 			'kuser.components.*',
 		));
 	}
+        
+    public function getBehaviorsFor($componentName)
+    {
+        if (isset($this->componentBehaviors[$componentName]))
+        {
+            return $this->componentBehaviors[$componentName];
+        }
+        else
+        {
+            return array();
+        }
+    }
 
 	public function beforeControllerAction($controller, $action)
 	{

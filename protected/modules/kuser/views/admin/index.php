@@ -1,14 +1,14 @@
 <?php
 $this->breadcrumbs = array(
-    KuserModule::t('Users') => array('admin'),
-    KuserModule::t('Manage'),
+    KUserModule::t('Users') => array('admin'),
+    KUserModule::t('Manage'),
 );
 ?>
-<h1><?php echo KuserModule::t('Manage Users'); ?></h1>
+<h1><?php echo KUserModule::t('Manage Users'); ?></h1>
 
 <?php echo $this->renderPartial('_menu', array(
     'list' => array(
-        CHtml::link(KuserModule::t('Create User'), array('create')),
+        CHtml::link(KUserModule::t('Create User'), array('create')),
     ),
 ));
 ?>
@@ -24,10 +24,10 @@ $this->breadcrumbs = array(
                 '"id" => $data->id))',
         ),
         array(
-            'name' => 'principalname',
+            'name' => 'username',
             'type' => 'raw',
             'value' => 
-                'CHtml::link(CHtml::encode($data->principalname), ' . 
+                'CHtml::link(CHtml::encode($data->username), ' . 
                 'array("admin/update", "id" => $data->id))',
         ),
         array(
@@ -44,15 +44,15 @@ $this->breadcrumbs = array(
             'name' => 'lastvisit',
             'value' => 
                 '(($data->lastvisit) ? date("d.m.Y H:i:s", $data->lastvisit) : ' . 
-                'KuserModule::t("Not visisted"))',
+                'KUserModule::t("Not visisted"))',
         ),
         array(
             'name' => 'status',
-            'value' => 'Kuser::itemAlias("UserStatus", $data->status)',
+            'value' => 'KUser::itemAlias("UserStatus", $data->status)',
         ),
         array(
             'name' => 'superuser',
-            'value' => 'Kuser::itemAlias("AdminStatus", $data->superuser)',
+            'value' => 'KUser::itemAlias("AdminStatus", $data->superuser)',
         ),
         array(
             'class' => 'CButtonColumn',

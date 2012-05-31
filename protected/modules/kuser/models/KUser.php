@@ -2,7 +2,7 @@
 
 
 /**
- * Description of Kuser
+ * Description of KUser
  *
  * 
  */
@@ -14,7 +14,7 @@ class KUser extends CActiveRecord
     /**
      * The following are the available columns in table 'users':
      * @var integer $id
-     * @var string $principalname
+     * @var string $username
      * @var string $email
      * @var integer $createtime
      * @var integer $lastvisit
@@ -36,7 +36,7 @@ class KUser extends CActiveRecord
      */
     public function tableName()
     {
-        Yii::app()->getModule('kuser')->tableUsers;
+        return Yii::app()->getModule('kuser')->tableUsers;
     }
     
     /**
@@ -46,11 +46,11 @@ class KUser extends CActiveRecord
     {
         if (Yii::app()->getModule('kuser')->isAdmin())
             return array(
-                array('principalname', 'length', 'max' => 128, 
+                array('username', 'length', 'max' => 128, 
                     'message' => KUserModule::t(
                     'Incorrect principal name (length exceeded 128 characters).')),
                 array('email', 'email'),
-                array('principalname', 'unique', 'message' => KUserModule::t(
+                array('username', 'unique', 'message' => KUserModule::t(
                     'This user\'s principal name already exists.')),
                 array('email', 'unique', 'message' => KUserModule::t(
                     'This user\'s email address already exists.')),
@@ -73,7 +73,7 @@ class KUser extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'principalname' => KUserModule::t('Principal Name'),
+            'username' => KUserModule::t('Principal Name'),
             'email' => KUserModule::t('E-mail'),
             'id' => KUserModule::t('Id'),
             'createtime' => KUserModule::t('Creation date'),
@@ -93,7 +93,7 @@ class KUser extends CActiveRecord
             'inactive' => array('condition' => 'status='.self::STATUS_INACTIVE),
             'superuser' => array('condition' => 'superuser=1'),
             'notsafe' => array('select' => 
-                'id, principalname, email, createtime, lastvisit, superuser, status'),
+                'id, username, email, createtime, lastvisit, superuser, status'),
         );
     }
     
@@ -104,7 +104,7 @@ class KUser extends CActiveRecord
     {
         return array(
             'select' => 
-            'id, principalname, email, createtime, lastvisit, superuser, status',
+            'id, username, email, createtime, lastvisit, superuser, status',
         );
     }
     
@@ -124,7 +124,7 @@ class KUser extends CActiveRecord
            ),
        );
        if (isset($code))
-           return isset($_items[$type][code]) ? $_items[$type][$code] : false;
+           return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
        else
            return isset($_items[$type]) ? $_items[$type] : false;
    }

@@ -2,3 +2,4 @@ assets/
 protected/runtime/
 themes/classic/views/
 nbproject/
+protected/config/main.php

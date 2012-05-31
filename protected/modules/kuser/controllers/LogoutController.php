@@ -1,6 +1,6 @@
 <?php
 
-class KLogoutController extends Controller
+class LogoutController extends Controller
 {
     public $defaultAction = 'logout';
     

@@ -1,6 +1,6 @@
 <?php
 
-class KAdminController extends Controller
+class AdminController extends Controller
 {
     public $defaultAction = 'admin';
     
@@ -24,7 +24,7 @@ class KAdminController extends Controller
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete'
                 'actions' => array('admin', 'delete', 'create', 'update', 'view'),
-                'users' => KUserModule::getAdmins(),
+                'users' => array('*'), //array(KUserModule::getAdmins()),
                 ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -37,7 +37,7 @@ class KAdminController extends Controller
      */
     public function actionAdmin()
     {
-        $dataProvider = new CActiveDataProvider('User', array(
+        $dataProvider = new CActiveDataProvider('KUser', array(
             'pagination' => array(
                 'pagesize' => Yii::app()->controller->module->user_page_size,
                 ),
@@ -54,7 +54,7 @@ class KAdminController extends Controller
     public function actionView()
     {
         $model = $this->loadModule();
-        $this->render('view', array(
+        $this->render('/kuser/view', array(
             'model' => $model,
         ));
     }
@@ -67,9 +67,9 @@ class KAdminController extends Controller
     {
         $model = new KUser;
         
-        if (isset($_POST['User']))
+        if (isset($_POST['KUser']))
         {
-            $model->attributes = $_POST['User'];
+            $model->attributes = $_POST['KUser'];
             $model->createtime = time();
             
             if ( $model->validate() )
@@ -77,7 +77,7 @@ class KAdminController extends Controller
                 if ( $model->save() )
                 {
                     $this->redirect(array(
-                        'view', 'id' => $model->id
+                        '/kuser/user/view', 'id' => $model->id
                     ));
                 }
                 
@@ -96,15 +96,15 @@ class KAdminController extends Controller
     {
         $model = $this->loadModel();
         
-        if ( isset($_POST['User']) )
+        if ( isset($_POST['KUser']) )
         {
-            $model->attributes = $_POST['User'];
+            $model->attributes = $_POST['KUser'];
             
             if ( $model->validate() )
             {
                 $model->save();
                 $this->redirect(array(
-                    'view', 'id' => $model->id
+                    '/kuser/view', 'id' => $model->id
                 ));
             }
         }
@@ -131,7 +131,7 @@ class KAdminController extends Controller
         }
         else
             throw new CHttpException(400, 
-                    KuserModule::t('Invalid request. Don\'t do that.'));
+                    KUserModule::t('Invalid request. Don\'t do that.'));
     }
     
     /**

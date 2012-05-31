@@ -1,6 +1,6 @@
 <?php
 
-class KUserController extends Controller
+class UserController extends Controller
 {
     /**
      * @var CActiveRecord the currently loaded data model instance. 
@@ -43,7 +43,7 @@ class KUserController extends Controller
     public function actionView()
     {
         $model = $this->loadModel();
-        $this->render('view', array(
+        $this->render('/kuser/view', array(
             'model' => $model,
             ));
     }
@@ -62,7 +62,7 @@ class KUserController extends Controller
             ),
         ));
         
-        $this->render('index', array(
+        $this->render('/kuser/index', array(
             'dataProvider' => $dataProvider,
         ));
     }

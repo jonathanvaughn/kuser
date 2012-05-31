@@ -36,8 +36,8 @@ class KUserLogin extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-                    'rememberMe' => KuserModule::t('Remember me next time'),
-                    'principalname' => KuserModule::t('Principal Name'),
+                    'rememberMe' => KUserModule::t('Remember me next time'),
+                    'username' => KUserModule::t('Principal Name'),
 		);
 	}
 
@@ -57,7 +57,7 @@ class KUserLogin extends CFormModel
             {
                 case UserIdentity::ERROR_NONE:
                     $duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
-                    Yii::app()->user->login($this->_identity,$duration); break;
+                    Yii::app()->user->login($identity,$duration); break;
                 case UserIdentity::ERROR_USERNAME_INVALID: 
                     $this->addError('password', 
                             'Incorrect username or password.'); break;
