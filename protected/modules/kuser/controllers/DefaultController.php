@@ -13,7 +13,7 @@ class DefaultController extends Controller
                 ),
             ));
             
-            $this->render('/kuser/index', array(
+            $this->render('/user/index', array(
                'dataProvider' => $dataProvider, 
             ));
 	}

@@ -66,6 +66,20 @@ class KUser extends CActiveRecord
         else
             return array();
     }
+    
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        $relations = array(
+            
+        );
+        if (isset(Yii::app()->getModule('kuser')->relations)) 
+            $relations = array_merge($relations, 
+                    Yii::app()->getModule('kuser')->relations);
+        return $relations;
+    }
 
     /**
      * @return array customized attribute labels (name => label) 

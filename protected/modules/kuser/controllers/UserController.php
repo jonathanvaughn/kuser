@@ -43,7 +43,7 @@ class UserController extends Controller
     public function actionView()
     {
         $model = $this->loadModel();
-        $this->render('/kuser/view', array(
+        $this->render('/user/view', array(
             'model' => $model,
             ));
     }
@@ -62,7 +62,7 @@ class UserController extends Controller
             ),
         ));
         
-        $this->render('/kuser/index', array(
+        $this->render('/user/index', array(
             'dataProvider' => $dataProvider,
         ));
     }

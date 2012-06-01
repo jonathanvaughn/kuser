@@ -54,7 +54,7 @@ class AdminController extends Controller
     public function actionView()
     {
         $model = $this->loadModule();
-        $this->render('/kuser/view', array(
+        $this->render('/user/view', array(
             'model' => $model,
         ));
     }
@@ -109,7 +109,7 @@ class AdminController extends Controller
             }
         }
         
-        $this->render('update', array(
+        $this->render('/admin/update', array(
             'model' => $model,
         ));
     }

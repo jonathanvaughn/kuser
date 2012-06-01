@@ -86,7 +86,7 @@ class LoginController extends Controller
             }
                 
             // display the login form
-            $this->render('/kuser/login',array('model'=>$model));
+            $this->render('/user/login',array('model'=>$model));
         }
         else
         {
