@@ -8,34 +8,32 @@
 class UserIdentity extends CUserIdentity
 {
     private $_id;
+    private $_principalName;
     
     const ERROR_KRB5_KEYTAB = 3; // Something went wrong loading the keytab
     const ERROR_KRB5_AUTH = 4; // Something went wrong while authenticating
     const ERROR_STATUS_INACTIVE = 5; // Account is inactive
-    const ERROR_MISSING = 6; // Succesful Krb Auth but account missing from DB
+    const ERROR_STATUS_MISSING = 6; // Succesful Krb Auth but account missing from DB
+    const ERROR_STATUS_BAN = 7;
 
-    //var $principalName = '';
-        
     /**
      * Authenticates a user
-     * The example implementation makes sure if the username and password
-     * are both 'demo'.
-     * In practical applications, this should be changed to authenticate
-     * against some persistent user identity storage (e.g. database).
+     * Check for Kerberos data, failing that attempt Kerberos based login with
+     * the provided credentials from the form. (Form-based not yet implemented)
      * @return boolean whether authentication succeeds.
      */
     public function authenticate()
     {
-        $this->errorCode=self::ERROR_NONE;
+//        $this->errorCode=self::ERROR_NONE;
             
         // Check for WWW-Negotiate authentication, assuming we have the krb5
         // extension
         if ((substr($this->username,0,9) == 'Kerberos:') && (extension_loaded('krb5')))
         {
             // Extract the Negotiate data from the username field
-            $data = substr($this->username,9);
+            $_data = substr($this->username,9);
             // Check if this is Kerberos data
-            if (substr($data,0,3) == 'YII')
+            if (substr($_data,0,3) == 'YII')
             {
                 // We have Kerberos data, attempt to authenticate using it
                     
@@ -58,11 +56,11 @@ class UserIdentity extends CUserIdentity
                         $this->errorCode=self::ERROR_NONE;
                         $this->username = $auth->getAuthenticatedUser();
                         
-                        $user = KUser::model()->notsafe()->findByAttributes(
+                        $user = User::model()->notsafe()->findByAttributes(
                                 array('username' => $this->username));
                         if ( $user === NULL )
                         {
-                            $this->errorCode = self::ERROR_MISSING;
+                            $this->errorCode = self::ERROR_STATUS_MISSING;
                         }
                         else if ( $user->status == 0)
                         {
@@ -71,6 +69,7 @@ class UserIdentity extends CUserIdentity
                         else
                         {
                             $this->_id = $user->id;
+                            $this->_principalName = $this->username;
                             $this->errorCode = self::ERROR_NONE;
                         }
                     }
@@ -91,9 +90,11 @@ class UserIdentity extends CUserIdentity
         }
         else
         {
+            // Normal login via form, but still authenticate via Kerberos
+            // We aren't supporting this yet.
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         
-            /*// Normal login via form
+            /*
             $users=array(
                 // username => password
 		'demo'=>'demo',
@@ -131,6 +132,6 @@ class UserIdentity extends CUserIdentity
      */
     public function getName()
     {
-        return $this->username;
+        return $this->_principalName;
     }
 }

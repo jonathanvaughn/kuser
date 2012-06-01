@@ -2,11 +2,11 @@
 
 
 /**
- * Description of KUser
+ * Description of User
  *
  * 
  */
-class KUser extends CActiveRecord
+class User extends CActiveRecord
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
@@ -73,7 +73,7 @@ class KUser extends CActiveRecord
     public function relations()
     {
         $relations = array(
-            
+            'profile' => array(self::HAS_ONE, 'Profile', 'user_id'),            
         );
         if (isset(Yii::app()->getModule('kuser')->relations)) 
             $relations = array_merge($relations, 

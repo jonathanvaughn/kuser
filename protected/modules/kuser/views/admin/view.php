@@ -23,6 +23,24 @@ $this->breadcrumbs = array(
         'username',
     );
     
+    $profileFields = ProfileField::model()->forOwner()->sort()->findAll();
+    if ($profileFields)
+    {
+        foreach($profileFields as $field)
+        {
+            array_push($attributes, array(
+                'label' => KuserModule::t($field->title),
+                'name' => $field->varname,
+                'type' => 'raw',
+                'value' => (($field->widgetView($model->profile)) ? 
+                        $field->widgetView($model->profile) : 
+                            (($field->range) ? Profile::range($field->range,
+                                    $model->profile->getAttribute($field->varname)) :
+                            $model->profile->getAttribute($field->varname))),
+                ));
+        }
+    }
+    
     array_push($attributes,
             'email',
             array(
@@ -36,11 +54,11 @@ $this->breadcrumbs = array(
             ),
             array(
                 'name' => 'superuser',
-                'value' => KUser::itemAlias("AdminStatus", $model->superuser),
+                'value' => User::itemAlias("AdminStatus", $model->superuser),
             ),
             array(
                 'name' => 'status',
-                'value' => KUser::itemAlias("UserStatus", $model->status),
+                'value' => User::itemAlias("UserStatus", $model->status),
             )
     );
     

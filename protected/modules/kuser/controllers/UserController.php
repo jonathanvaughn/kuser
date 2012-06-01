@@ -53,9 +53,9 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new CActiveDataProvider('KUser', array(
+        $dataProvider = new CActiveDataProvider('User', array(
             'criteria' => array(
-                'condition' => 'status>=' . KUser::STATUS_INACTIVE,
+                'condition' => 'status>=' . User::STATUS_INACTIVE,
                 ),
             'pagination' => array(
                 'pageSize' => Yii::app()->controller->module->user_page_size,
@@ -76,7 +76,7 @@ class UserController extends Controller
         if ($this->_model === NULL)
         {
             if (isset($_GET['id']))
-                $this->_model = KUser::model()->findbyPk($_GET['id']);
+                $this->_model = User::model()->findbyPk($_GET['id']);
             if ($this->_model === NULL)
                 throw new CHttpException(404, 
                     KUserModule::t('The requested page does not exist.'));
@@ -94,7 +94,7 @@ class UserController extends Controller
         if ($this->_model === NULL)
         {
             if ($id!==NULL || isset($_GET['id']))
-                $this->_model = KUser::model ()->findbyPk($id !== NULL ? 
+                $this->_model = User::model ()->findbyPk($id !== NULL ? 
                         $id : $_GET['id']);
             if ($this->_model === NULL)
                 throw new CHttpException(404, 

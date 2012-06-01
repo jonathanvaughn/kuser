@@ -67,6 +67,7 @@ return array(
 			'username' => 'spnego',
 			'password' => 'spnego',
 			'charset' => 'utf8',
+                        'tablePrefix' => 'tbl_',
 		),
 		
 		'errorHandler'=>array(

@@ -24,7 +24,7 @@ class AdminController extends Controller
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete'
                 'actions' => array('admin', 'delete', 'create', 'update', 'view'),
-                'users' => array('*'), //array(KUserModule::getAdmins()),
+                'users' => KUserModule::getAdmins(),
                 ),
             array('deny', // deny all users
                 'users' => array('*'),
@@ -37,7 +37,7 @@ class AdminController extends Controller
      */
     public function actionAdmin()
     {
-        $dataProvider = new CActiveDataProvider('KUser', array(
+        $dataProvider = new CActiveDataProvider('User', array(
             'pagination' => array(
                 'pagesize' => Yii::app()->controller->module->user_page_size,
                 ),
@@ -65,27 +65,29 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-        $model = new KUser;
+        $model = new User;
+        $profile = new Profile;
         
-        if (isset($_POST['KUser']))
+        if (isset($_POST['User']))
         {
-            $model->attributes = $_POST['KUser'];
+            $model->attributes = $_POST['User'];
             $model->createtime = time();
-            
-            if ( $model->validate() )
+            $profile->attributes=$_POST['Profile'];
+            $profile->user_id=0;
+            if ( $model->validate()  && $profile->validate())
             {
                 if ( $model->save() )
                 {
-                    $this->redirect(array(
-                        '/kuser/user/view', 'id' => $model->id
-                    ));
+                    $profile->user_id = $model->id;
+                    $profile->save();
                 }
-                
-            }
+                $this->redirect(array('/kuser/user/view', 'id' => $model->id));
+            } else $profile->validate();
         }
         
         $this->render('create', array(
             'model' => $model,
+            'profile' => $profile,
         ));
     }
     
@@ -95,14 +97,17 @@ class AdminController extends Controller
     public function actionUpdate()
     {
         $model = $this->loadModel();
+        $profile = $model->profile;
         
-        if ( isset($_POST['KUser']) )
+        if ( isset($_POST['User']) )
         {
-            $model->attributes = $_POST['KUser'];
+            $model->attributes = $_POST['User'];
+            $profile->attributes = $_POST['Profile'];
             
-            if ( $model->validate() )
+            if ( $model->validate() && $profile->validate())
             {
                 $model->save();
+                $profile->save();
                 $this->redirect(array(
                     '/kuser/view', 'id' => $model->id
                 ));
@@ -111,6 +116,7 @@ class AdminController extends Controller
         
         $this->render('/admin/update', array(
             'model' => $model,
+            'profile' => $profile,
         ));
     }
     
@@ -123,6 +129,8 @@ class AdminController extends Controller
         {
             // only allow deletion via POST
             $model = $this->loadModel();
+            $profile = Profile::model()->findByPk($model->id);
+            $profile->delete();
             $model->delete();
             
             // if AJAX don't redirect
@@ -143,7 +151,7 @@ class AdminController extends Controller
         if ( $this->_model === NULL )
         {
             if ( isset($_GET['id']) )
-                $this->_model = KUser::model()->notsafe()->findByPk($_GET['id']);
+                $this->_model = User::model()->notsafe()->findByPk($_GET['id']);
             if ( $this->_model === NULL )
                 throw CHttpException(404, KUserModule::t(
                         'The requested page does not exist.'));

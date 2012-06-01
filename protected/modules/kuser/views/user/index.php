@@ -9,6 +9,8 @@ $this->breadcrumbs = array (
     ?><ul class="actions">
         <li><?php echo CHtml::link(KUserModule::t('Manage User'), 
                 Yii::app()->getModule('kuser')->adminUrl); ?></li>
+        <li><?php echo CHtml::link(KuserModule::t('Manage Profile Field'),
+                array('profileField/admin')); ?></li>
 </ul><!-- actions --><?php
 } ?>
 <?php $this->widget('zii.widgets.grid.CGridView', array(

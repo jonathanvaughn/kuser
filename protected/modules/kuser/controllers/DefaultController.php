@@ -4,9 +4,9 @@ class DefaultController extends Controller
 {
 	public function actionIndex()
 	{
-            $dataProvider = new CActiveDataProvider('KUser', array(
+            $dataProvider = new CActiveDataProvider('User', array(
                 'criteria' => array(
-                    'condition' => 'status>='.KUser::STATUS_INACTIVE,
+                    'condition' => 'status>='.User::STATUS_INACTIVE,
                 ),
                 'pagination' => array(
                     'pageSize' => Yii::app()->controller->module->user_page_size,

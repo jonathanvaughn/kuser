@@ -21,16 +21,51 @@
     <div class="row">
         <?php echo CHtml::activeLabelEx($model, 'superuser'); ?>
         <?php echo CHtml::activeDropDownList($model, 'superuser', 
-                KUser::itemAlias('AdminStatus')); ?>
+                User::itemAlias('AdminStatus')); ?>
         <?php echo CHtml::error($model, 'superuser'); ?>
     </div>        
     <div class="row">
         <?php echo CHtml::activeLabelEx($model, 'status'); ?>
         <?php echo CHtml::activeDropDownList($model, 'status', 
-                KUser::itemAlias('UserStatus')); ?>
+                User::itemAlias('UserStatus')); ?>
         <?php echo CHtml::error($model, 'status'); ?>
     </div>        
     
+<?php
+    $profileFields = $profile->getFields();
+    if ($profileFields)
+    {
+        foreach ($profileFields as $field)
+        {?>
+    <div class="row">
+        <?php echo CHtml::activeLabelEx($profile, $field->varname); ?>
+        <?php
+            if ($field->widgetEdit($profile))
+            {
+                echo $field->widgetEdit($profile);
+            }
+            elseif ($field->range) {
+                echo CHtml::activeDropDownList($profile, $field->varname, 
+                        Profile::range($field->range));
+            }
+            elseif ($field->field_type=="TEXT")
+            {
+                echo CHtml::activeTextArea($profile, $field->varname, 
+                        array('rows' => 6, 'cols' => 50));
+            }
+            else
+            {
+                echo CHtml::activeTextField($profile, $field->varname, 
+                        array('size' => 60, 'maxlength' => 
+                        (($field->field_size) ? $field->field_size : 255)));
+            }
+            ?>
+        <?php echo CHtml::error($profile, $field->varname); ?>
+    </div>
+    <?php
+        }
+    }
+?>
     <div class="row buttons">
         <?php echo CHtml::submitButton($model->isNewRecord ? 
                 'Create' : 'Save'); ?>

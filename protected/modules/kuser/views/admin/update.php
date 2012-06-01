@@ -15,4 +15,5 @@ $this->breadcrumbs = array(
         ),
     ));
     
-    echo $this->renderPartial('_form', array('model' => $model));
+    echo $this->renderPartial('_form', array('model' => $model, 
+        'profile' => $profile));

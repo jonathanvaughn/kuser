@@ -21,6 +21,12 @@ class KuserModule extends CWebModule
      */
     public $user_page_size = 20;
     
+    /**
+     * @var int
+     * @desc items on page
+     */
+    public $fields_page_size = 10;
+    
     public $kerberosKeytab = '';
     
     /**
@@ -33,11 +39,18 @@ class KuserModule extends CWebModule
     public $logoutUrl = array('/kuser/logout');
     public $adminUrl = array('/kuser/admin');
     public $viewUrl = array('/kuser/view');
+    public $profileUrl = array('/kuser/profile');
     public $returnUrl = array('/');
+    public $returnLogoutUrl = array('/');
             
-    public $relations = array();
+    public $fieldsMessage = '';
     
-    public $tableUsers = 'users';
+    public $relations = array();
+    public $profileRelations = array();
+    
+    public $tableUsers = '{{users}}';
+    public $tableProfiles = '{{profiles}}';
+    public $tableProfileFields = '{{profiles_fields}}';
     
     static private $_user;
     static private $_admin;
@@ -45,6 +58,42 @@ class KuserModule extends CWebModule
 
     public $componentBehaviors=array();
     
+    public function init()
+	{
+		// this method is called when the module is being created
+		// you may place code here to customize the module or the application
+
+		// import the module-level models and components
+		$this->setImport(array(
+			'kuser.models.*',
+			'kuser.components.*',
+		));
+	}
+
+    public function getBehaviorsFor($componentName)
+    {
+        if (isset($this->componentBehaviors[$componentName]))
+        {
+            return $this->componentBehaviors[$componentName];
+        }
+        else
+        {
+            return array();
+        }
+    }
+	public function beforeControllerAction($controller, $action)
+	{
+		if(parent::beforeControllerAction($controller, $action))
+		{
+			// this method is called before any module controller action is performed
+			// you may place customized code here
+			return true;
+		}
+		else
+			return false;
+	}
+
+        
     /**
      * @param $str
      * @param $params
@@ -85,12 +134,13 @@ class KuserModule extends CWebModule
     {
         if (!self::$_admins)
         {
-            $admins = KUser::model()->active()->superuser()->findAll();
+            $admins = User::model()->active()->superuser()->findAll();
             $return_name = array();
             foreach ($admins as $admin)
                 array_push($return_name,$admin->username);
             self::$_admins = $return_name;
         }
+        return self::$_admins;
     }
         
     /**
@@ -102,7 +152,7 @@ class KuserModule extends CWebModule
     {
         
         if ($id)
-            return KUser::model()->activate()->findByPk($id);
+            return User::model()->activate()->findByPk($id);
         else
         {
             if (Yii::app()->user->isGuest)
@@ -113,8 +163,8 @@ class KuserModule extends CWebModule
             {
                 if (!self::$_user)
                 {
-                    $id = Yii::app()->user->id;
-                    self::$_user = KUser::model()->active()->findByPk($id);
+                    self::$_user = 
+                            User::model()->active()->findByPk(Yii::app()->user->id);
                 }
                 return self::$_user;
             }
@@ -130,40 +180,5 @@ class KuserModule extends CWebModule
     {
         return User;
     }
-        
-    public function init()
-	{
-		// this method is called when the module is being created
-		// you may place code here to customize the module or the application
 
-		// import the module-level models and components
-		$this->setImport(array(
-			'kuser.models.*',
-			'kuser.components.*',
-		));
-	}
-        
-    public function getBehaviorsFor($componentName)
-    {
-        if (isset($this->componentBehaviors[$componentName]))
-        {
-            return $this->componentBehaviors[$componentName];
-        }
-        else
-        {
-            return array();
-        }
-    }
-
-	public function beforeControllerAction($controller, $action)
-	{
-		if(parent::beforeControllerAction($controller, $action))
-		{
-			// this method is called before any module controller action is performed
-			// you may place customized code here
-			return true;
-		}
-		else
-			return false;
-	}
 }

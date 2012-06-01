@@ -11,7 +11,7 @@ class LoginController extends Controller
     {
         if (Yii::app()->user->isGuest)
         {
-            $model=new KUserLogin;
+            $model=new UserLogin;
         
 /*        
             // if it is ajax validation request
@@ -22,9 +22,9 @@ class LoginController extends Controller
             }
 */        
             // collect user input data
-            if(isset($_POST['KUserLogin']))
+            if(isset($_POST['UserLogin']))
             {
-                $model->attributes=$_POST['KUserLogin'];
+                $model->attributes=$_POST['UserLogin'];
                 // validate user input and redirect to the previous page if valid
                 if($model->validate())
                 {
@@ -96,7 +96,7 @@ class LoginController extends Controller
         
     private function visitNow()
     {
-        $lastVisit = KUser::model()->notsafe()->findByPk(Yii::app()->user->id);
+        $lastVisit = User::model()->notsafe()->findByPk(Yii::app()->user->id);
         $lastVisit->lastvisit = time();
         $lastVisit->save();
     }

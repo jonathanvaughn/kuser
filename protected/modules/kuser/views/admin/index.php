@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs = array(
-    KUserModule::t('Users') => array('admin'),
+    KUserModule::t('Users') => array('/kuser/user'),
     KUserModule::t('Manage'),
 );
 ?>
@@ -48,11 +48,11 @@ $this->breadcrumbs = array(
         ),
         array(
             'name' => 'status',
-            'value' => 'KUser::itemAlias("UserStatus", $data->status)',
+            'value' => 'User::itemAlias("UserStatus", $data->status)',
         ),
         array(
             'name' => 'superuser',
-            'value' => 'KUser::itemAlias("AdminStatus", $data->superuser)',
+            'value' => 'User::itemAlias("AdminStatus", $data->superuser)',
         ),
         array(
             'class' => 'CButtonColumn',
