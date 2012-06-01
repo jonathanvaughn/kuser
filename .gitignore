@@ -1,5 +1,5 @@
 assets/
-protected/runtime/
-themes/classic/views/
 nbproject/
 protected/config/main.php
+protected/config/HTTP.keytab
+protected/runtime/*
