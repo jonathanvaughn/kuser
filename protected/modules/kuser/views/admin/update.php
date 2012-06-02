@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs = array(
     KUserModule::t('Users') => array('admin'),
-    $model->username = array('view', 'id' => $model->id),
+    $model->username => array('view', 'id' => $model->id),
     KUserModule::t('Update'),
 );
 ?>

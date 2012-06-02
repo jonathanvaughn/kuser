@@ -62,7 +62,11 @@ class User extends CActiveRecord
                     'integerOnly' => true),
                 );
         else if (Yii::app()->user->id == $this->id)
-            return array();
+            return array(
+                array('email', 'email'),
+                array('email', 'unique', 'message' => KuserModule::t(
+                        'This user\'s email address already exists.')),
+            );
         else
             return array();
     }
